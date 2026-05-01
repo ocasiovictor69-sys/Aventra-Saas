@@ -13,8 +13,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AVENTRA | The Management Machine",
-  description: "AVENTRA automates real estate operations, compliance, and maintenance without linear headcount growth. The portfolio protector for modern property owners.",
+  title: "Aventra - Real Estate Operations | TomorrowNow AI",
+  description: "Aventra: Next-gen real estate operations and autonomous management systems. Portfolio & compliance management at scale.",
+  keywords: ["real estate", "property management", "compliance", "autonomous operations", "portfolio management"],
+  authors: [{ name: "TomorrowNow AI" }],
+  openGraph: {
+    title: "Aventra - Real Estate Operations",
+    description: "Next-gen real estate operations and autonomous management systems.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

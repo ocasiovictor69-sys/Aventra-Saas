@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /$
+Disallow: /dashboard
+Disallow: /properties
+Disallow: /settings
+Disallow: /actions
+
+Sitemap: https://aventra.tomorrownowai.com/sitemap.xml
