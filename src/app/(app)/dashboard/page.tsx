@@ -55,7 +55,7 @@ export default async function Dashboard() {
     <div className="flex-1 flex flex-col min-h-screen p-12">
       <div className="flex justify-between items-center mb-12">
         <div>
-          <span className="text-xs font-bold text-indigo-500 uppercase tracking-widest mb-2 block">Ad Astra per Aspera</span>
+          <span className="text-xs font-bold text-brand-primary uppercase tracking-widest mb-2 block">Ad Astra per Aspera</span>
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2 text-slate-900">
             Aventra <span className="text-gradient">Real Estate</span>
           </h1>
@@ -68,7 +68,7 @@ export default async function Dashboard() {
           <div key={metric.title} className="glass-card rounded-2xl p-8">
             <h3 className="text-slate-400 text-xs font-bold uppercase tracking-wider">{metric.title}</h3>
             <p className="text-4xl font-extrabold text-slate-800 mt-3">{metric.value}</p>
-            <span className="text-indigo-500 text-sm font-bold block mt-2">{metric.sub}</span>
+            <span className="text-brand-primary text-sm font-bold block mt-2">{metric.sub}</span>
           </div>
         ))}
       </div>
@@ -77,16 +77,16 @@ export default async function Dashboard() {
         <h2 className="text-2xl font-bold text-slate-800 mb-6">Portfolio Controls</h2>
         <div className="flex flex-col gap-4">
           <Link href="/dashboard/properties" className="flex items-center justify-between group p-4 hover:bg-slate-50/50 rounded-xl transition-all duration-200">
-            <span className="text-slate-700 font-semibold group-hover:text-indigo-600 transition-colors">View Properties &amp; Units</span>
-            <span className="text-indigo-500 transform group-hover:translate-x-1 transition-transform">→</span>
+            <span className="text-slate-700 font-semibold group-hover:text-brand-primary transition-colors">View Properties &amp; Units</span>
+            <span className="text-brand-primary transform group-hover:translate-x-1 transition-transform">→</span>
           </Link>
           <Link href="/dashboard/maintenance" className="flex items-center justify-between group p-4 hover:bg-slate-50/50 rounded-xl transition-all duration-200">
-            <span className="text-slate-700 font-semibold group-hover:text-indigo-600 transition-colors">Review Maintenance Tickets</span>
-            <span className="text-indigo-500 transform group-hover:translate-x-1 transition-transform">→</span>
+            <span className="text-slate-700 font-semibold group-hover:text-brand-primary transition-colors">Review Maintenance Tickets</span>
+            <span className="text-brand-primary transform group-hover:translate-x-1 transition-transform">→</span>
           </Link>
           <Link href="/dashboard/compliance" className="flex items-center justify-between group p-4 hover:bg-slate-50/50 rounded-xl transition-all duration-200">
-            <span className="text-slate-700 font-semibold group-hover:text-indigo-600 transition-colors">Compliance Documents</span>
-            <span className="text-indigo-500 transform group-hover:translate-x-1 transition-transform">→</span>
+            <span className="text-slate-700 font-semibold group-hover:text-brand-primary transition-colors">Compliance Documents</span>
+            <span className="text-brand-primary transform group-hover:translate-x-1 transition-transform">→</span>
           </Link>
         </div>
       </div>

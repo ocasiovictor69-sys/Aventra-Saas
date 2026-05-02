@@ -67,7 +67,7 @@ export default function AventraLayout({ children }: { children: React.ReactNode 
       <aside className="hidden md:flex w-64 bg-white border-r border-zinc-200 flex-col justify-between shadow-sm">
         <div className="p-6">
           <Link href="/dashboard" className="flex items-center gap-3 mb-8">
-            <div className="w-8 h-8 rounded-lg bg-[#4F46E5] flex items-center justify-center text-white font-bold text-sm">
+            <div className="w-8 h-8 rounded-lg bg-brand-primary flex items-center justify-center text-white font-bold text-sm">
               Av
             </div>
             <span className="text-xl font-bold text-zinc-900 tracking-tight">AVENTRA</span>
@@ -83,7 +83,7 @@ export default function AventraLayout({ children }: { children: React.ReactNode 
                   href={link.href}
                   className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
                     isActive
-                      ? 'bg-[#4F46E5] text-white shadow-sm shadow-indigo-200'
+                      ? 'bg-brand-primary text-white shadow-sm shadow-brand-primary/20'
                       : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950'
                   }`}
                 >
@@ -140,7 +140,7 @@ export default function AventraLayout({ children }: { children: React.ReactNode 
               key={link.href}
               href={link.href}
               className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg transition-colors ${
-                isActive ? 'text-[#4F46E5]' : 'text-zinc-500'
+                isActive ? 'text-brand-primary' : 'text-zinc-500'
               }`}
             >
               <span className="text-xl leading-none">{link.icon}</span>

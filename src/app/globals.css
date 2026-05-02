@@ -3,8 +3,8 @@
 
 @theme {
   --font-sans: "Outfit", sans-serif;
-  --color-brand-primary: #4F46E5;
-  --color-brand-primary-light: #818cf8;
+  --color-brand-primary: #8B5CF6;
+  --color-brand-primary-light: #A78BFA;
   --color-brand-secondary: #0ea5e9;
   --color-brand-accent: #f43f5e;
 }
@@ -28,11 +28,11 @@
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-sky-500;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-primary to-sky-500;
   }
 
   .premium-button {
-    @apply relative overflow-hidden bg-gradient-to-r from-indigo-600 to-indigo-500 text-white shadow-md transition-all duration-300 hover:shadow-lg hover:from-indigo-500 hover:to-indigo-400 active:scale-95;
+    @apply relative overflow-hidden bg-gradient-to-r from-brand-primary to-brand-primary-light text-white shadow-md transition-all duration-300 hover:shadow-lg hover:from-brand-primary-light hover:to-brand-primary active:scale-95;
   }
 }
 
