@@ -8,6 +8,7 @@ create table if not exists public.profiles (
   id         uuid primary key references auth.users(id) on delete cascade,
   email      text not null,
   full_name  text,
+  notification_preferences JSONB DEFAULT '{"lease_expiry":true,"maintenance":true,"compliance":true}'::jsonb,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
