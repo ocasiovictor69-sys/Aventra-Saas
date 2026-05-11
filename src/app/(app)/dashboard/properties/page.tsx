@@ -54,7 +54,7 @@ export default async function PropertiesPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {properties.map((p) => (
-            <div key={p.id} className="p-6 bg-slate-50 rounded-xl border border-slate-200 hover:border-brand-purple/30 transition-colors">
+            <Link key={p.id} href={`/dashboard/properties/${p.id}`} className="block p-6 bg-slate-50 rounded-xl border border-slate-200 hover:border-brand-purple/30 hover:shadow-sm transition-all">
               <div className="flex justify-between items-start mb-2">
                 <h3 className="font-semibold text-black">{p.name}</h3>
                 <span className={`px-2 py-1 text-xs font-semibold rounded-full ${p.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'}`}>
@@ -66,7 +66,7 @@ export default async function PropertiesPage() {
                 <span className="text-slate-500">{p.property_type}</span>
                 <span className="font-medium text-black">{p.total_units} units</span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}

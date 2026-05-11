@@ -10,9 +10,13 @@ export default function ForgotPasswordPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    if (!email) { setError('Please enter your email address'); return; }
+    if (!validateEmail(email)) { setError('Please enter a valid email address'); return; }
     setLoading(true);
 
     try {

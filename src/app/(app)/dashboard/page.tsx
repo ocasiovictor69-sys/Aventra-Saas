@@ -47,7 +47,7 @@ export default async function Dashboard() {
 
   const metrics = [
     { title: 'Managed Properties', value: propertyCount.toString(),                               sub: 'active' },
-    { title: 'Occupancy Rate',     value: totalUnits > 0 ? `${occupancyRate}%` : '—',             sub: `${occupiedUnits} of ${totalUnits} units` },
+    { title: 'Occupancy Rate',     value: totalUnits > 0 ? `${occupancyRate}%` : '—',             sub: totalUnits > 0 ? `${occupiedUnits} of ${totalUnits} units` : 'no units yet' },
     { title: 'Open Maintenance',   value: maintenanceCount.toString(),                             sub: 'open or in progress' },
   ];
 
@@ -73,8 +73,18 @@ export default async function Dashboard() {
         ))}
       </div>
 
+      {propertyCount === 0 && (
+        <div className="bg-indigo-50 border border-indigo-100 rounded-2xl p-8 mb-8">
+          <h2 className="text-lg font-bold text-indigo-900 mb-1">Get started with Aventra</h2>
+          <p className="text-indigo-700 text-sm mb-5">Your portfolio is empty. Add your first property to begin tracking units, maintenance, and compliance.</p>
+          <Link href="/dashboard/properties/new" className="inline-block px-5 py-2.5 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:opacity-90 transition-opacity">
+            + Add First Property
+          </Link>
+        </div>
+      )}
+
       <div className="glass-panel rounded-2xl p-10 max-w-xl border-slate-200/60">
-        <h2 className="text-2xl font-bold text-slate-800 mb-6">Portfolio Controls</h2>
+        <h2 className="text-2xl font-bold text-slate-800 mb-6">Quick Access</h2>
         <div className="flex flex-col gap-4">
           <Link href="/dashboard/properties" className="flex items-center justify-between group p-4 hover:bg-slate-50/50 rounded-xl transition-all duration-200">
             <span className="text-slate-700 font-semibold group-hover:text-brand-primary transition-colors">View Properties &amp; Units</span>
@@ -86,6 +96,10 @@ export default async function Dashboard() {
           </Link>
           <Link href="/dashboard/compliance" className="flex items-center justify-between group p-4 hover:bg-slate-50/50 rounded-xl transition-all duration-200">
             <span className="text-slate-700 font-semibold group-hover:text-brand-primary transition-colors">Compliance Documents</span>
+            <span className="text-brand-primary transform group-hover:translate-x-1 transition-transform">→</span>
+          </Link>
+          <Link href="/dashboard/settings" className="flex items-center justify-between group p-4 hover:bg-slate-50/50 rounded-xl transition-all duration-200">
+            <span className="text-slate-700 font-semibold group-hover:text-brand-primary transition-colors">Account Settings</span>
             <span className="text-brand-primary transform group-hover:translate-x-1 transition-transform">→</span>
           </Link>
         </div>
