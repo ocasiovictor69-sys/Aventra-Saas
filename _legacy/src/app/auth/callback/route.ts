@@ -9,9 +9,14 @@ export async function GET(request: Request) {
   if (code) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
+    
     if (!error) {
-      return NextResponse.redirect(`${origin}${next}`);
+      const isLocalPath = next.startsWith('/') && !next.startsWith('//');
+      const safeNext = isLocalPath ? next : '/dashboard';
+      return NextResponse.redirect(`${origin}${safeNext}`);
     }
+    
+    console.error('[Auth Callback] Code exchange error:', error.message);
   }
 
   return NextResponse.redirect(`${origin}/login?error=auth_callback_error`);
