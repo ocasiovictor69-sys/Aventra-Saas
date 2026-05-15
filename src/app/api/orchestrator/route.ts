@@ -4,6 +4,7 @@ import { AgentArrears } from '@/lib/agents/agent-arrears'
 import { AgentLease } from '@/lib/agents/agent-lease'
 import { AgentCompliance } from '@/lib/agents/agent-compliance'
 import { AgentScreening } from '@/lib/agents/agent-screening'
+import { C05_EvictionBrain } from '@/lib/agents/agent-eviction-brain'
 
 export async function POST(request: Request) {
   try {
@@ -53,6 +54,14 @@ export async function POST(request: Request) {
       const agent = new AgentScreening(supabase)
       const { tenant_id } = body
       const res = await agent.run({ team_id, tenant_id, trigger: 'manual' })
+      results.push(res)
+    }
+
+    // 5. EVICTION BRAIN (MOD-C05)
+    if (action === 'PROCESS_EVICTION') {
+      const agent = new C05_EvictionBrain(supabase)
+      const { property_id, payload } = body
+      const res = await agent.run({ team_id, property_id, payload, trigger: 'manual' })
       results.push(res)
     }
 

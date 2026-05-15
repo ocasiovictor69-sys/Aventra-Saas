@@ -16,6 +16,23 @@ export type AgentResult = {
   payload?: Record<string, any>
 }
 
+export type ModuleResult = {
+  module_id: string
+  module_name: string
+  type: 'DETERMINISTIC' | 'PROBABILISTIC'
+  passed: boolean
+  hitl_required: boolean
+  data: any
+}
+
+export type PropertyDossier = {
+  property_id: string
+  tenant_id: string
+  days_late: number
+  arrears_balance: number
+  compliance_score: number
+}
+
 export type AgentInput = {
   property_id?: string
   tenant_id?: string

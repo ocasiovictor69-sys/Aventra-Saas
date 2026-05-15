@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 
 export const metadata: Metadata = {
-  title: 'Dashboard — Aventra Deal Engine',
-  description: 'Your real estate deal engine. Two pipelines, running 24/7.',
+  title: 'Dashboard — Aventra Sovereign Control',
+  description: 'Institutional asset management running 24/7.',
 }
 
 const WORKFLOWS = [

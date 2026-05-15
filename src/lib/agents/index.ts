@@ -1,7 +1,8 @@
 // src/lib/agents/index.ts
 export * from './types'
 export * from './base'
-export * from './agent-verify'
-export * from './agent-sourcing'
-export * from './agent-outreach'
-export * from './agent-deal'
+export * from './agent-screening'
+export * from './agent-lease'
+export * from './agent-arrears'
+export * from './agent-compliance'
+export * from './agent-eviction-brain'

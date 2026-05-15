@@ -1,46 +1,32 @@
 import { AgentRunner } from './base'
-import type { AgentInput, AgentResult, EscalationLevel } from './types'
+import type { AgentInput, AgentResult } from './types'
 
 export class AgentArrears extends AgentRunner {
   async run(input: AgentInput): Promise<AgentResult> {
     const { team_id } = input
 
     try {
-      // 1. Fetch Late Leases (Mocking the query for the reconstruction phase)
+      // DETERMINISTIC: Real query for tenants in arrears
       const { data: arrears, error } = await this.db
-        .from('arrears_logs')
-        .select('*, tenants(*)')
+        .from('tenants')
+        .select('*')
         .eq('team_id', team_id)
-        .in('escalation_status', ['GRACE_PERIOD', 'NOTICE_SENT'])
+        .gt('arrears_balance', 0)
+        .order('arrears_balance', { ascending: false })
 
       if (error) throw error
 
-      let actionsTaken = 0
-
-      for (const log of arrears || []) {
-        let nextStatus: EscalationLevel = log.escalation_status
-        
-        if (log.days_late > 30) nextStatus = 'LEGAL_REVIEW'
-        else if (log.days_late > 10) nextStatus = 'NOTICE_SENT'
-
-        if (nextStatus !== log.escalation_status) {
-          await this.db
-            .from('arrears_logs')
-            .update({ escalation_status: nextStatus, updated_at: new Date().toISOString() })
-            .eq('id', log.id)
-          
-          await this.logAudit(team_id, 'ARREARS_ESCALATED', { from: log.escalation_status, to: nextStatus }, log.property_id)
-          actionsTaken++
-        }
-      }
+      await this.logAudit(team_id, 'ARREARS_AUDIT_COMPLETE', { count: arrears?.length ?? 0 })
 
       return {
         success: true,
         agent: 'AgentArrears',
         action_taken: 'arrears_audit_complete',
-        payload: { escalated_count: actionsTaken }
+        payload: {
+          arrears_count: arrears?.length ?? 0,
+          tenants: arrears?.map(t => t.id)
+        }
       }
-
     } catch (err) {
       return { success: false, agent: 'AgentArrears', action_taken: 'failed', error: (err as Error).message }
     }
