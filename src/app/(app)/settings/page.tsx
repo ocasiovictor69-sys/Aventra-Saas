@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Settings — Aventra Deal Engine',
+  title: 'Settings — Aventra Sovereign Control',
   description: 'Configure your Aventra account and integrations.',
 }
 

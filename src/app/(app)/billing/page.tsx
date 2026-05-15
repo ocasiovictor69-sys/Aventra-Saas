@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Billing & Subscription — Aventra Deal Engine',
+  title: 'Billing & Subscription — Aventra Sovereign Control',
   description: 'Manage your Aventra subscription and billing details.',
 }
 

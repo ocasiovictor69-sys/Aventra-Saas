@@ -1,84 +1,64 @@
-// src/app/api/orchestrator/route.ts
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { PLAYBOOK } from '@/lib/playbook'
-import { Aventrautreach } from '@/lib/agents/agent-outreach'
+import { AgentArrears } from '@/lib/agents/agent-arrears'
+import { AgentLease } from '@/lib/agents/agent-lease'
+import { AgentCompliance } from '@/lib/agents/agent-compliance'
+import { AgentScreening } from '@/lib/agents/agent-screening'
 
 export async function POST(request: Request) {
   try {
     const authHeader = request.headers.get('Authorization')
     const secret = process.env.ORCHESTRATOR_SECRET
 
-    if (secret && authHeader !== `Bearer ${secret}`) {
+    // HARDENED: Zero-Bypass Auth
+    if (!secret || authHeader !== `Bearer ${secret}`) {
+      console.error('[Aventra Orchestrator] Unauthorized access attempt.')
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const supabase = createAdminClient()
     const now = new Date().toISOString()
-
-    // 1. Fetch leads due for sequence action
-    const { data: leads, error } = await supabase
-      .from('leads')
-      .select('*')
-      .in('priority', ['HIGH', 'MEDIUM'])
-      .or(`next_action_at.is.null,next_action_at.lte.${now}`)
-      .limit(20)
-
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 })
-    }
-
     const results = []
 
-    for (const lead of leads) {
-      const priority = lead.priority as 'HIGH' | 'MEDIUM'
-      const steps = PLAYBOOK[priority]
-      if (!steps) continue
+    const body = await request.json()
+    const { action, team_id } = body
 
-      const stepIndex = lead.outreach_step || 0
-      const step = steps[stepIndex]
+    if (!team_id) {
+      return NextResponse.json({ error: 'team_id required' }, { status: 400 })
+    }
 
-      if (!step) {
-        // Sequence exhausted
-        await supabase
-          .from('leads')
-          .update({ stage: 'ARCHIVED', updated_at: now })
-          .eq('id', lead.id)
-        results.push({ lead_id: lead.id, status: 'exhausted' })
-        continue
-      }
+    // 1. ARREARS WORKFLOW (MOD-C03)
+    if (action === 'PROCESS_ARREARS') {
+      const agent = new AgentArrears(supabase)
+      const res = await agent.run({ team_id, trigger: 'cron' })
+      results.push(res)
+    }
 
-      // 2. Execute Action
-      // In this version, we trigger the Aventrautreach for any outreach action
-      if (step.action.startsWith('outreach')) {
-        const agent = new Aventrautreach()
-        await agent.run({
-          lead_id: lead.id,
-          team_id: lead.team_id,
-          trigger: 'cron'
-        })
-      }
+    // 2. LEASE AUDIT WORKFLOW (MOD-C02)
+    if (action === 'AUDIT_LEASES') {
+      const agent = new AgentLease(supabase)
+      const res = await agent.run({ team_id, trigger: 'cron' })
+      results.push(res)
+    }
 
-      // 3. Advance Step
-      const nextIndex = stepIndex + 1
-      const nextActionAt = new Date()
-      nextActionAt.setDate(nextActionAt.getDate() + step.wait_days)
+    // 3. COMPLIANCE WORKFLOW (MOD-C04)
+    if (action === 'RUN_COMPLIANCE') {
+      const agent = new AgentCompliance(supabase)
+      const res = await agent.run({ team_id, trigger: 'cron' })
+      results.push(res)
+    }
 
-      await supabase
-        .from('leads')
-        .update({
-          outreach_step: nextIndex,
-          next_action_at: nextActionAt.toISOString(),
-          updated_at: now
-        })
-        .eq('id', lead.id)
-
-      results.push({ lead_id: lead.id, status: 'advanced', step: step.label })
+    // 4. SCREENING WORKFLOW (MOD-C01)
+    if (action === 'PROCESS_SCREENING') {
+      const agent = new AgentScreening(supabase)
+      const { tenant_id } = body
+      const res = await agent.run({ team_id, tenant_id, trigger: 'manual' })
+      results.push(res)
     }
 
     return NextResponse.json({
       success: true,
-      processed: leads.length,
+      timestamp: now,
       results
     })
 

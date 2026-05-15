@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
-  title: 'Approval Queue — Aventra Deal Engine',
+  title: 'Approval Queue — Aventra Sovereign Control',
   description: 'Review and approve agent actions.',
 }
 

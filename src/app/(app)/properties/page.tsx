@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Property Pipeline — Aventra Deal Engine',
+  title: 'Properties — Aventra Sovereign Control',
   description: 'Manage your portfolio and unit inventory.',
 }
 
@@ -49,7 +49,7 @@ export default async function PropertiesPage() {
               <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Jurisdiction</th>
               <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Tenant</th>
               <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Status</th>
-              <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Action</th>
+              <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Action</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/5">

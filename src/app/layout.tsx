@@ -6,8 +6,8 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' });
 
 export const metadata: Metadata = {
-  title: 'Aventra | AI Real Estate Deal Engine',
-  description: 'Deterministic underwriting and AI-driven real estate orchestration.',
+  title: 'Aventra Sovereign Control | Institutional Asset Engine',
+  description: 'Deterministic asset management and institutional compliance.',
 };
 
 export default function RootLayout({
