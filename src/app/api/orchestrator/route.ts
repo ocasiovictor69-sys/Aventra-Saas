@@ -5,6 +5,21 @@ import { AgentLease } from '@/lib/agents/agent-lease'
 import { AgentCompliance } from '@/lib/agents/agent-compliance'
 import { AgentScreening } from '@/lib/agents/agent-screening'
 import { C05_EvictionBrain } from '@/lib/agents/agent-eviction-brain'
+import { z } from 'zod'
+
+const aventraOrchestratorSchema = z.object({
+  action: z.enum([
+    'PROCESS_ARREARS',
+    'AUDIT_LEASES',
+    'RUN_COMPLIANCE',
+    'PROCESS_SCREENING',
+    'PROCESS_EVICTION',
+  ]),
+  team_id: z.string().min(1, 'team_id is required'),
+  tenant_id: z.string().optional(),
+  property_id: z.string().optional(),
+  payload: z.record(z.unknown()).optional(),
+})
 
 export async function POST(request: Request) {
   try {
@@ -17,16 +32,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    const body = await request.json()
+    const parsed = aventraOrchestratorSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Validation failed', details: parsed.error.issues }, { status: 400 })
+    }
+
+    const { action, team_id, tenant_id, property_id, payload } = parsed.data
     const supabase = createAdminClient()
     const now = new Date().toISOString()
     const results = []
-
-    const body = await request.json()
-    const { action, team_id } = body
-
-    if (!team_id) {
-      return NextResponse.json({ error: 'team_id required' }, { status: 400 })
-    }
 
     // 1. ARREARS WORKFLOW (MOD-C03)
     if (action === 'PROCESS_ARREARS') {
@@ -52,7 +67,6 @@ export async function POST(request: Request) {
     // 4. SCREENING WORKFLOW (MOD-C01)
     if (action === 'PROCESS_SCREENING') {
       const agent = new AgentScreening(supabase)
-      const { tenant_id } = body
       const res = await agent.run({ team_id, tenant_id, trigger: 'manual' })
       results.push(res)
     }
@@ -60,7 +74,6 @@ export async function POST(request: Request) {
     // 5. EVICTION BRAIN (MOD-C05)
     if (action === 'PROCESS_EVICTION') {
       const agent = new C05_EvictionBrain(supabase)
-      const { property_id, payload } = body
       const res = await agent.run({ team_id, property_id, payload, trigger: 'manual' })
       results.push(res)
     }
